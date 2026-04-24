@@ -1,6 +1,9 @@
 
-![GitHub language count](https://img.shields.io/github/languages/top/Biomed-imaging-lab/SpineTool?style=for-the-badge)
-[![GNU License](https://img.shields.io/github/license/Biomed-imaging-lab/SpineTool.svg?style=for-the-badge)](https://github.com/Biomed-imaging-lab/SpineTool/blob/main/LICENSE)
+![GitHub language count](https://img.shields.io/github/languages/top/NEurosgen
+NeuroGraph?style=for-the-badge)
+[![GNU License](https://img.shields.io/github/license/NEurosgen
+NeuroGraph.svg?style=for-the-badge)](https://github.com/NEurosgen
+NeuroGraph/blob/main/LICENSE)
 [![Platform](https://img.shields.io/badge/OS-_Linux-blue?style=for-the-badge)]()
 [![Language](https://img.shields.io/badge/python_version-_3.10-green?style=for-the-badge)]()
 [![Language](https://img.shields.io/badge/Conda-_torch_5060-green?style=for-the-badge)]()
