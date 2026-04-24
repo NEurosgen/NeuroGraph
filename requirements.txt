@@ -1,0 +1,9 @@
+torch
+torch-geometric
+pytorch-lightning
+hydra-core
+omegaconf
+numpy
+pandas
+matplotlib
+tensorboard

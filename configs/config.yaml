@@ -1,0 +1,88 @@
+seed: 51
+
+# Network configuration
+network:
+  _target_: src.models.jepa.LeJEPA
+  encoder:
+    _target_: src.models.encoder.GraphGinEncoder
+    in_channels: 100  
+    out_channels: 32
+    num_layers: 3
+  predictor:
+    _target_: src.models.jepa.CrossAttentionPredictor
+    hidden_dim: 32
+    pos_dim: 3
+    num_heads: 2
+    dropout: 0.05
+  lambd: 0.01
+  num_slices: 32
+  ema: 0.996
+  
+
+# Training configuration
+training:
+  learning_rate: 1e-2
+  weight_decay: 1e-5
+  max_epochs: 400
+  optimizer:
+    _target_: torch.optim.AdamW
+    weight_decay: ${training.weight_decay}
+  scheduler:    # For consistency with the experiment
+    _target_: torch.optim.lr_scheduler.CosineAnnealingLR
+    T_max: ${training.max_epochs}
+
+# Trainer configuration
+trainer:
+  max_epochs: ${training.max_epochs}
+  accelerator: "gpu"
+  devices: 1
+  log_every_n_steps: 10
+  
+
+# DataModule configuration
+datamodule:
+  _target_: src.data_utils.datamodule.GraphDataModule
+  dataset:
+    _target_: src.data_utils.datamodule.GraphDataSet
+    path: "" # path to your dataset
+    stats_path: 'data/stats_sph/' # path to statistics
+    class_path: '' # path to your ground truth cell types csv file
+  #features: [0,4,5,6,7,13,14,15,17,19,20]
+  batch_size: 6
+  num_workers: 2
+  r: 0.0001
+  mask_ratio: 0.01
+  structural_encoding:
+    laplacian_k: 0
+    centrality: false 
+    random_walk_steps: 0  
+  seed: ${seed}
+
+  ratio: [0.75,0.25]
+
+
+
+
+# Classifier training (linear probe on frozen JEPA encoder)
+classifier:
+  checkpoint_path: '' # path to your JEPA checkpoint
+  classifier_checkpoint_path: '' # path to your classifier checkpoint
+  path: "" # path to your processed dataset
+  stats_path: "data/stats_9009_sph/" # path to statistics
+  num_classes: 2
+  class_names: ["ab", "wt"]
+  folder_to_label:
+    ab: 0
+    wt: 1
+  learning_rate: 1e-2
+  weight_decay: 1e-5
+  max_epochs: 500
+  optimizer:
+    _target_: torch.optim.AdamW
+    weight_decay: ${classifier.weight_decay}
+  scheduler: 
+    _target_: torch.optim.lr_scheduler.CosineAnnealingLR
+    T_max: ${classifier.max_epochs}
+
+  sigma: 1.0
+  explain_sample_idx: 5
